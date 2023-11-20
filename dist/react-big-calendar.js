@@ -53111,7 +53111,8 @@
             longPressThreshold = _this$props5.longPressThreshold,
             isAllDay = _this$props5.isAllDay,
             resizable = _this$props5.resizable,
-            showAllEvents = _this$props5.showAllEvents
+            showAllEvents = _this$props5.showAllEvents,
+            showWeekOnMonthView = _this$props5.showWeekOnMonthView
           if (renderForMeasure) return this.renderDummy()
           var metrics = this.slotMetrics(this.props)
           var levels = metrics.levels,
@@ -53141,24 +53142,26 @@
                 height: '100%',
               },
             },
-            /*#__PURE__*/ React.createElement(
-              'div',
-              {
-                style: {
-                  width: 25,
-                  height: '100%',
-                  background: '#D7D7D7',
-                  borderBottom: '1px solid white',
-                  display: 'flex',
-                  justifyContent: 'center',
-                },
-              },
-              /*#__PURE__*/ React.createElement(
-                'p',
-                null,
-                moment$1(range[0]).isoWeek()
-              )
-            ),
+            showWeekOnMonthView
+              ? /*#__PURE__*/ React.createElement(
+                  'div',
+                  {
+                    style: {
+                      width: 25,
+                      height: '100%',
+                      background: '#D7D7D7',
+                      borderBottom: '1px solid white',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    },
+                  },
+                  /*#__PURE__*/ React.createElement(
+                    'p',
+                    null,
+                    moment$1(range[0]).isoWeek()
+                  )
+                )
+              : null,
             /*#__PURE__*/ React.createElement(
               'div',
               {
@@ -53328,7 +53331,8 @@
           longPressThreshold = _this$props.longPressThreshold,
           accessors = _this$props.accessors,
           getters = _this$props.getters,
-          showAllEvents = _this$props.showAllEvents
+          showAllEvents = _this$props.showAllEvents,
+          showWeekOnMonthView = _this$props.showWeekOnMonthView
         var _this$state = _this.state,
           needLimitMeasure = _this$state.needLimitMeasure,
           rowLimit = _this$state.rowLimit
@@ -53374,6 +53378,7 @@
             rtl: _this.props.rtl,
             resizable: _this.props.resizable,
             showAllEvents: showAllEvents,
+            showWeekOnMonthView: showWeekOnMonthView,
           })
         )
       }
@@ -53544,6 +53549,7 @@
               month = localizer.visibleDays(date, localizer),
               weeks = chunk_1(month, 7)
             this._weekCount = weeks.length
+            console.log(this.props.view)
             return /*#__PURE__*/ React.createElement(
               'div',
               {
@@ -53570,20 +53576,23 @@
           value: function renderHeaders(row) {
             var _this$props5 = this.props,
               localizer = _this$props5.localizer,
-              components = _this$props5.components
+              components = _this$props5.components,
+              showWeekOnMonthView = _this$props5.showWeekOnMonthView
             var first = row[0]
             var last = row[row.length - 1]
             var HeaderComponent = components.header || Header
             return /*#__PURE__*/ React.createElement(
               React.Fragment,
               null,
-              /*#__PURE__*/ React.createElement('div', {
-                style: {
-                  width: 25,
-                  height: 20,
-                  background: '#D7D7D7',
-                },
-              }),
+              showWeekOnMonthView
+                ? /*#__PURE__*/ React.createElement('div', {
+                    style: {
+                      width: 25,
+                      height: 20,
+                      background: '#D7D7D7',
+                    },
+                  })
+                : null,
               localizer.range(first, last, 'day').map(function (day, idx) {
                 return /*#__PURE__*/ React.createElement(
                   'div',

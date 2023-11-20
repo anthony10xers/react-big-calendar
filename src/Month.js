@@ -112,6 +112,7 @@ class MonthView extends React.Component {
       accessors,
       getters,
       showAllEvents,
+      showWeekOnMonthView,
     } = this.props
 
     const { needLimitMeasure, rowLimit } = this.state
@@ -156,6 +157,7 @@ class MonthView extends React.Component {
           rtl={this.props.rtl}
           resizable={this.props.resizable}
           showAllEvents={showAllEvents}
+          showWeekOnMonthView={showWeekOnMonthView}
         />
       </>
     )
@@ -191,14 +193,16 @@ class MonthView extends React.Component {
   }
 
   renderHeaders(row) {
-    let { localizer, components } = this.props
+    let { localizer, components, showWeekOnMonthView } = this.props
     let first = row[0]
     let last = row[row.length - 1]
     let HeaderComponent = components.header || Header
 
     return (
       <>
-        <div style={{ width: 25, height: 20, background: '#D7D7D7' }} />
+        {showWeekOnMonthView ? (
+          <div style={{ width: 25, height: 20, background: '#D7D7D7' }} />
+        ) : null}
         {localizer.range(first, last, 'day').map((day, idx) => (
           <div key={'header_' + idx} className="rbc-header">
             <HeaderComponent

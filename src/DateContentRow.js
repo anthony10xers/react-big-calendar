@@ -124,6 +124,7 @@ class DateContentRow extends React.Component {
       isAllDay,
       resizable,
       showAllEvents,
+      showWeekOnMonthView,
     } = this.props
 
     if (renderForMeasure) return this.renderDummy()
@@ -152,18 +153,20 @@ class DateContentRow extends React.Component {
 
     return (
       <div style={{ display: 'flex', height: '100%' }}>
-        <div
-          style={{
-            width: 25,
-            height: '100%',
-            background: '#D7D7D7',
-            borderBottom: '1px solid white',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <p>{moment(range[0]).isoWeek()}</p>
-        </div>
+        {showWeekOnMonthView ? (
+          <div
+            style={{
+              width: 25,
+              height: '100%',
+              background: '#D7D7D7',
+              borderBottom: '1px solid white',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <p>{moment(range[0]).isoWeek()}</p>
+          </div>
+        ) : null}
         <div className={className} role="rowgroup" ref={this.containerRef}>
           <BackgroundCells
             localizer={localizer}
