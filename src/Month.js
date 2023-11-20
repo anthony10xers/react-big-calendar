@@ -78,6 +78,7 @@ class MonthView extends React.Component {
   render() {
     let { date, localizer, className } = this.props,
       month = localizer.visibleDays(date, localizer),
+      // weeks ini dipakai buat looping jumlah cell
       weeks = chunk(month, 7)
 
     this._weekCount = weeks.length
@@ -127,34 +128,36 @@ class MonthView extends React.Component {
     weeksEvents.sort((a, b) => sortEvents(a, b, accessors, localizer))
 
     return (
-      <DateContentRow
-        key={weekIdx}
-        ref={weekIdx === 0 ? this.slotRowRef : undefined}
-        container={this.getContainer}
-        className="rbc-month-row"
-        getNow={getNow}
-        date={date}
-        range={week}
-        events={weeksEvents}
-        maxRows={showAllEvents ? Infinity : rowLimit}
-        selected={selected}
-        selectable={selectable}
-        components={components}
-        accessors={accessors}
-        getters={getters}
-        localizer={localizer}
-        renderHeader={this.readerDateHeading}
-        renderForMeasure={needLimitMeasure}
-        onShowMore={this.handleShowMore}
-        onSelect={this.handleSelectEvent}
-        onDoubleClick={this.handleDoubleClickEvent}
-        onKeyPress={this.handleKeyPressEvent}
-        onSelectSlot={this.handleSelectSlot}
-        longPressThreshold={longPressThreshold}
-        rtl={this.props.rtl}
-        resizable={this.props.resizable}
-        showAllEvents={showAllEvents}
-      />
+      <>
+        <DateContentRow
+          key={weekIdx}
+          ref={weekIdx === 0 ? this.slotRowRef : undefined}
+          container={this.getContainer}
+          className="rbc-month-row"
+          getNow={getNow}
+          date={date}
+          range={week}
+          events={weeksEvents}
+          maxRows={showAllEvents ? Infinity : rowLimit}
+          selected={selected}
+          selectable={selectable}
+          components={components}
+          accessors={accessors}
+          getters={getters}
+          localizer={localizer}
+          renderHeader={this.readerDateHeading}
+          renderForMeasure={needLimitMeasure}
+          onShowMore={this.handleShowMore}
+          onSelect={this.handleSelectEvent}
+          onDoubleClick={this.handleDoubleClickEvent}
+          onKeyPress={this.handleKeyPressEvent}
+          onSelectSlot={this.handleSelectSlot}
+          longPressThreshold={longPressThreshold}
+          rtl={this.props.rtl}
+          resizable={this.props.resizable}
+          showAllEvents={showAllEvents}
+        />
+      </>
     )
   }
 
@@ -193,15 +196,20 @@ class MonthView extends React.Component {
     let last = row[row.length - 1]
     let HeaderComponent = components.header || Header
 
-    return localizer.range(first, last, 'day').map((day, idx) => (
-      <div key={'header_' + idx} className="rbc-header">
-        <HeaderComponent
-          date={day}
-          localizer={localizer}
-          label={localizer.format(day, 'weekdayFormat')}
-        />
-      </div>
-    ))
+    return (
+      <>
+        <div style={{ width: 25, height: 20, background: '#D7D7D7' }} />
+        {localizer.range(first, last, 'day').map((day, idx) => (
+          <div key={'header_' + idx} className="rbc-header">
+            <HeaderComponent
+              date={day}
+              localizer={localizer}
+              label={localizer.format(day, 'weekdayFormat')}
+            />
+          </div>
+        ))}
+      </>
+    )
   }
 
   renderOverlay() {
