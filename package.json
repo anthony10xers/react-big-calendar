@@ -1,6 +1,6 @@
 {
   "name": "10xers-react-calendar",
-  "version": "1.8.5",
+  "version": "1.8.7",
   "description": "Calendar! with events",
   "author": {
     "name": "Anthony",
@@ -10,11 +10,6 @@
     "type": "git",
     "url": "git+https://github.com/anthony10xers/react-big-calendar.git"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "license": "MIT",
   "main": "lib/index.js",
   "module": "dist/react-big-calendar.esm.js",
   "style": "lib/css/react-big-calendar.css",
