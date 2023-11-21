@@ -10,6 +10,7 @@ import EventEndingRow from './EventEndingRow'
 import NoopWrapper from './NoopWrapper'
 import ScrollableWeekWrapper from './ScrollableWeekWrapper'
 import * as DateSlotMetrics from './utils/DateSlotMetrics'
+import moment from 'moment/moment'
 
 class DateContentRow extends React.Component {
   constructor(...args) {
@@ -123,6 +124,7 @@ class DateContentRow extends React.Component {
       isAllDay,
       resizable,
       showAllEvents,
+      showWeekOnMonthView,
     } = this.props
 
     if (renderForMeasure) return this.renderDummy()
@@ -150,50 +152,74 @@ class DateContentRow extends React.Component {
     }
 
     return (
-      <div className={className} role="rowgroup" ref={this.containerRef}>
-        <BackgroundCells
-          localizer={localizer}
-          date={date}
-          getNow={getNow}
-          rtl={rtl}
-          range={range}
-          selectable={selectable}
-          container={this.getContainer}
-          getters={getters}
-          onSelectStart={onSelectStart}
-          onSelectEnd={onSelectEnd}
-          onSelectSlot={this.handleSelectSlot}
-          components={components}
-          longPressThreshold={longPressThreshold}
-          resourceId={resourceId}
-        />
+      <div style={{ display: 'flex', height: '100%' }}>
+        {showWeekOnMonthView ? (
+          <div
+            style={{
+              width: 25,
+              height: '100%',
+              background: '#D7D7D7',
+              borderBottom: '1px solid white',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <p>{moment(range[0]).isoWeek()}</p>
+          </div>
+        ) : null}
+        <div className={className} role="rowgroup" ref={this.containerRef}>
+          <BackgroundCells
+            localizer={localizer}
+            date={date}
+            getNow={getNow}
+            rtl={rtl}
+            range={range}
+            selectable={selectable}
+            container={this.getContainer}
+            getters={getters}
+            onSelectStart={onSelectStart}
+            onSelectEnd={onSelectEnd}
+            onSelectSlot={this.handleSelectSlot}
+            components={components}
+            longPressThreshold={longPressThreshold}
+            resourceId={resourceId}
+          />
 
-        <div
-          className={clsx(
-            'rbc-row-content',
-            showAllEvents && 'rbc-row-content-scrollable'
-          )}
-          role="row"
-        >
-          {renderHeader && (
-            <div className="rbc-row " ref={this.headingRowRef}>
-              {range.map(this.renderHeadingCell)}
-            </div>
-          )}
-          <ScrollableWeekComponent>
-            <WeekWrapper isAllDay={isAllDay} {...eventRowProps} rtl={this.props.rtl}>
-              {levels.map((segs, idx) => (
-                <EventRow key={idx} segments={segs} {...eventRowProps} />
-              ))}
-              {!!extra.length && (
-                <EventEndingRow
-                  segments={extra}
-                  onShowMore={this.handleShowMore}
-                  {...eventRowProps}
-                />
-              )}
-            </WeekWrapper>
-          </ScrollableWeekComponent>
+          <div
+            className={clsx(
+              'rbc-row-content',
+              showAllEvents && 'rbc-row-content-scrollable'
+            )}
+            role="row"
+          >
+            {renderHeader && (
+              <div className="rbc-row " ref={this.headingRowRef}>
+                {range.map(this.renderHeadingCell)}
+              </div>
+            )}
+            <ScrollableWeekComponent>
+              <WeekWrapper
+                isAllDay={isAllDay}
+                {...eventRowProps}
+                rtl={this.props.rtl}
+              >
+                {levels.map((segs, idx) => {
+                  return (
+                    <>
+                      <EventRow key={idx} segments={segs} {...eventRowProps} />
+                    </>
+                  )
+                })}
+                {!!extra.length && (
+                  <EventEndingRow
+                    segments={extra}
+                    onShowMore={this.handleShowMore}
+                    {...eventRowProps}
+                  />
+                )}
+              </WeekWrapper>
+            </ScrollableWeekComponent>
+          </div>
         </div>
       </div>
     )
